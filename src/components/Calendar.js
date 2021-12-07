@@ -6,8 +6,7 @@ import listPlugin from '@fullcalendar/list';
 import moment from 'moment';
 
 
-function CalendarList()
-{
+function CalendarList() {
     const [events, setEvents] = useState([]);
 
     const fetchData = async () => {
@@ -15,15 +14,25 @@ function CalendarList()
             const response = await fetch('https://customerrest.herokuapp.com/gettrainings');
             const data = await response.json();
             let content = data;
-            content.map(x => x.fullname = x.customer.firstname + " " + x.customer.lastname)
-            
+
+            content.map(x => {
+                if (x.customer != null) {
+                    return x.fullname = x.customer.firstname + " " + x.customer.lastname
+                }
+                else {
+                    return x.fullname = "null";
+                }
+
+
+            })
+
             let events = [];
             content.forEach(x => {
-                let title = x.activity +" / "+x.customer.firstname + " " + x.customer.lastname;
+                let title = x.activity + " / " + x.fullname;
                 let start = moment(x.date).format();
-                let end = moment(x.date).add(x.duration,"minutes").format();
+                let end = moment(x.date).add(x.duration, "minutes").format();
 
-                events.push({title : title,start:start,end:end})
+                events.push({ title: title, start: start, end: end })
             });
             console.log(events);
             setEvents(events);
@@ -36,21 +45,21 @@ function CalendarList()
 
 
     return (
-    <>
-    <h1>Calendar</h1>
-    <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin  ]}
-        initialView="dayGridMonth"
-        themeSystem='standard'
-        height={"auto"}
-        headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,dayGridDay,listWeek'
-          }}
-          events={{events}}
-      />
-    </>)
+        <>
+            <h1>Calendar</h1>
+            <FullCalendar
+                plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
+                initialView="dayGridMonth"
+                themeSystem='standard'
+                height={"auto"}
+                headerToolbar={{
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,dayGridDay,listWeek'
+                }}
+                events={{ events }}
+            />
+        </>)
 }
 
 export default CalendarList;

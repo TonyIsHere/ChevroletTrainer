@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import logo from './logo.svg';
 import './App.css';
 
-import CustomersList from "./components/customerlist";
-import TrainingList from "./components/traininglist";
+import CustomersList from "./components/Customerlist";
+import TrainingList from "./components/Traininglist";
 import Calendar from "./components/Calendar";
+import ChartTraining from './components/ChartTraining';
 
 
 import AppBar from '@mui/material/AppBar';
@@ -21,7 +21,7 @@ import {
 } from "react-router-dom";
 
 
-function Home() {
+function CustomerPage() {
   return (
     <Box sx={{ p: 3 }}>
       <CustomersList />
@@ -29,7 +29,7 @@ function Home() {
   )
 }
 
-function About() {
+function TrainingPage() {
   return (<Box sx={{ p: 3 }}>
     <TrainingList />
   </Box>)
@@ -39,6 +39,14 @@ function CalendarPages() {
   return (
     <Box sx={{ p: 3 }}>
       <Calendar />
+    </Box>
+  )
+}
+
+function StatPages() {
+  return (
+    <Box sx={{ p: 3 }}>
+      <ChartTraining/>
     </Box>
   )
 }
@@ -60,16 +68,16 @@ function App() {
             aria-label="nav tabs example"
             indicatorColor="secondary"
             textColor="inherit">
-            <Tab label="Page One" to="/" component={Link} />
-            <Tab label="Page Two" to="/calendar" component={Link} />
-            <Tab label="Page Three" to="/about" component={Link} />
+            <Tab label="Customers" to="/" component={Link} />
+            <Tab label="Calendar" to="/calendar" component={Link} />
+            <Tab label="Trainings" to="/tranings" component={Link} />
           </Tabs>
         </AppBar>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />}></Route>
-          <Route path="/contact" element={<h1>Contact address</h1>} />
+          <Route path="/" element={<CustomerPage />} />
+          <Route path="/tranings" element={<TrainingPage />}></Route>
           <Route path="/calendar" element={<CalendarPages/>} />
+          <Route path="/stat" element={<StatPages/>} />
           <Route path="*" element={<h1>Page not found</h1>} />
         </Routes>
       </Router>

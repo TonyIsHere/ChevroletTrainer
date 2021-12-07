@@ -5,14 +5,12 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
-import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import moment from 'moment';
 import { TextField } from '@mui/material';
 import SearchIcon from "@mui/icons-material/Search";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AddTraining from './AddTrainings';
+import { Link } from 'react-router-dom';
 
 function TrainingList() {
     const gridRef = React.useRef();
@@ -22,7 +20,7 @@ function TrainingList() {
         {
             headerName: "Action",
             field: "id",
-            cellRendererFramework: (params) => <Button size="small" color="error" onClick={_ => deleteTraining(params)} ><DeleteIcon/> </Button>,
+            cellRendererFramework: (params) => <Button size="small" color="error" onClick={_ => deleteTraining(params)} ><DeleteIcon /> </Button>,
         },
         {
             headerName: "Activity",
@@ -53,10 +51,15 @@ function TrainingList() {
     const deleteTraining = data => {
         if (window.confirm("Are you sure?")) {
             console.log("delete");
-            let url = "https://customerrest.herokuapp.com/api/trainings/"+data.value;
-        console.log("id :"+ url);
+            let url = "https://customerrest.herokuapp.com/api/trainings/" + data.value;
+            console.log("id :" + url);
+
+            fetch(url, {
+                method: "DELETE",
+            }).then(response => fetchData())
+
         }
-      };
+    };
 
 
 
@@ -66,7 +69,17 @@ function TrainingList() {
             const data = await response.json();
             let content = data;
             content.map(x => x.date = moment(x.date).format("DD.MM.YYYY hh:mm a"));
-            content.map(x => x.fullname = x.customer.firstname + " " + x.customer.lastname)
+
+            content.map(x => {
+                if (x.customer != null) {
+                    return x.fullname = x.customer.firstname + " " + x.customer.lastname
+                }
+                else {
+                    return x.fullname = "null";
+                }
+
+
+            })
             setTrainings(content);
         }
         catch (error) {
@@ -76,40 +89,42 @@ function TrainingList() {
     React.useEffect(_ => fetchData(), []);
 
 
-  
-    
+
+
 
     const onFilterTextChange = (e) => {
         gridRef.current.setQuickFilter(e.target.value)
     }
 
- 
+
 
     return (
         <>
-        <h1>Trainings</h1>
-        <div className="ag-theme-alpine" style={{ height: 400, width: "100%", margin: 'auto' }}>
-            <TextField  onChange={onFilterTextChange} placeholder="search somethings..."  variant="standard" InputProps={{
-                endAdornment: (
-                    <InputAdornment position="start">
-                        <SearchIcon />
-                    </InputAdornment>
-                )
-            }} />
-            <AgGridReact
-                ref={gridRef}
-                onGridReady={params => {gridRef.current = params.api;  gridRef.current.sizeColumnsToFit();}}
-                rowSelection="single"
-                animateRows="true"
-                columnDefs={columns}
-                rowData={trainings}
-                pagination={true}
-                paginationPageSize={5}
-                suppressCellSelection={true}
-            >
-            </AgGridReact>
-        </div>
+            <h1>Trainings</h1>
+            <div className="ag-theme-alpine" style={{ height: 400, width: "100%", margin: 'auto' }}>
+                <TextField onChange={onFilterTextChange} placeholder="search somethings..." variant="standard" InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="start">
+                            <SearchIcon />
+                        </InputAdornment>
+                    )
+                }} />
+                <Button component={Link} to="/stat" >Stats</Button>
+                <AgGridReact
+                    ref={gridRef}
+                    onGridReady={params => { gridRef.current = params.api; gridRef.current.sizeColumnsToFit(); }}
+                    rowSelection="single"
+                    animateRows="true"
+                    columnDefs={columns}
+                    rowData={trainings}
+                    pagination={true}
+                    paginationPageSize={5}
+                    suppressCellSelection={true}
+                >
+                </AgGridReact>
+            </div>
         </>);
+
 }
 
 export default TrainingList;

@@ -8,39 +8,38 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 
-function AddCustomer(props)
-{
-    const [open, setOpen] = React.useState(false);
-    const [customer,setCustomer] = React.useState({
-        firstname:"",
-        lastname:"",
-        streetaddress:"",
-        postcode:"",
-        city:"",
-        email:"",
-        phone:""
-    })
+function AddCustomer(props) {
+  const [open, setOpen] = React.useState(false);
+  const [customer, setCustomer] = React.useState({
+    firstname: "",
+    lastname: "",
+    streetaddress: "",
+    postcode: "",
+    city: "",
+    email: "",
+    phone: ""
+  })
 
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-    const handleSave = () => {
-        props.callback(customer);
-        handleClose();
-      };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-    const inputChanged = e => {
-        setCustomer({...customer,[e.target.name]:e.target.value})
-    }
+  const handleSave = () => {
+    props.callback(customer);
+    handleClose();
+  };
 
-       return (
+  const inputChanged = e => {
+    setCustomer({ ...customer, [e.target.name]: e.target.value })
+  }
+
+  return (
     <>
-      <Button onClick={handleClickOpen}><AddIcon/></Button>
+      <Button onClick={handleClickOpen}><AddIcon /></Button>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Customer</DialogTitle>
@@ -54,7 +53,7 @@ function AddCustomer(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="lastname"
             value={customer.lastname}
@@ -63,7 +62,7 @@ function AddCustomer(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="streetaddress"
             value={customer.streetaddress}
@@ -72,7 +71,7 @@ function AddCustomer(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="postcode"
             value={customer.postcode}
@@ -81,7 +80,7 @@ function AddCustomer(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="city"
             value={customer.city}
@@ -90,7 +89,7 @@ function AddCustomer(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="email"
             value={customer.email}
@@ -99,7 +98,7 @@ function AddCustomer(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="phone"
             value={customer.phone}

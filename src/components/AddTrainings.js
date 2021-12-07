@@ -6,49 +6,47 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import AddIcon from '@mui/icons-material/Add';
 
-function AddTraining(props)
-{
-    const [open, setOpen] = React.useState(false);
-    const [training,setTraining] = React.useState({
-        date:"",
-        activity:"",
-        duration:"",
-        customerlink:props.link
-    })
-    const handleClickOpen = () => {
-      setOpen(true);
+function AddTraining(props) {
+  const [open, setOpen] = React.useState(false);
+  const [training, setTraining] = React.useState({
+    date: "",
+    activity: "",
+    duration: "",
+    customer: props.link
+  })
+  const handleClickOpen = () => {
+    setOpen(true);
 
-      //reset var when it's loaded
-      setTraining({
-        date:"",
-        activity:"",
-        duration:"",
-        customerlink:props.link
+    //reset var when it's loaded
+    setTraining({
+      date: "",
+      activity: "",
+      duration: "",
+      customer: props.link
     });
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-      setTraining({
-        date:"",
-        activity:"",
-        duration:"",
-        customerlink:""
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setTraining({
+      date: "",
+      activity: "",
+      duration: "",
+      customer: ""
     });
-    };
+  };
 
-    const handleSave = () => {
-        props.callback(training);
-        handleClose();
-      };
+  const handleSave = () => {
+    props.callback(training);
+    handleClose();
+  };
 
-    const inputChanged = e => {
-      setTraining({...training,[e.target.name]:e.target.value})
-    }
+  const inputChanged = e => {
+    setTraining({ ...training, [e.target.name]: e.target.value })
+  }
 
-       return (
+  return (
     <>
       <Button onClick={handleClickOpen}>Add Training</Button>
 
@@ -64,7 +62,7 @@ function AddTraining(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="activity"
             value={training.activity}
@@ -73,7 +71,7 @@ function AddTraining(props)
             fullWidth
             variant="standard"
           />
-            <TextField
+          <TextField
             margin="dense"
             name="duration"
             type="number"
@@ -83,7 +81,7 @@ function AddTraining(props)
             fullWidth
             variant="standard"
           />
-     
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

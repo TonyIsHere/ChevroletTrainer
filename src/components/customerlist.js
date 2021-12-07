@@ -149,7 +149,17 @@ function CustomersList() {
     function onRowValueChanged(event) {
         var data = event.data;
         console.log("update data")
-        console.log(event.data);
+
+        fetch(data.links[0].href, {
+            method: "PUT",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => fetchData())
+            .catch(err => console.error(err))
+
+
     }
 
 
@@ -158,18 +168,12 @@ function CustomersList() {
             console.log("delete");
             let url = data.value;
             console.log("id :" + url);
-            //   fetch(url, { method: "DELETE" })
-            //     .then(response => {
-            //       if (response.ok) {
-            //         setOpen(true);
-            //         setMsg("Car deleted");
-            //         fetchData()
-            //       }
-            //       else {
-            //         alert("Something went wrong");
-            //       }
-            //     })
-            //     .catch(err => console.error(err))
+
+            fetch(url, {
+                method: "DELETE"
+            }).then(response => fetchData())
+                .catch(err => console.error(err))
+
         }
     };
 
@@ -187,14 +191,33 @@ function CustomersList() {
     const addCustomer = customer => {
         console.log("add new customer");
         console.log(customer);
+        fetch("https://customerrest.herokuapp.com/api/customers", {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(customer)
+        }).then(response => fetchData())
+            .catch(err => console.error(err))
+
     }
 
     const addTraining = training => {
         console.log("add new training");
+
+
+
+
         console.log(training);
+        fetch("https://customerrest.herokuapp.com/api/trainings", {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(training)
+        }).then(response => fetchData())
+            .catch(err => console.error(err))
     }
-
-
 
 
     React.useEffect(_ => fetchData(), []);
